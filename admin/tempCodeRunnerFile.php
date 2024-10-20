@@ -16,15 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $max_participants = $_POST['max_participants'];
     $status = $_POST['status'];
 
-    $target_dir = "../uploads/"; 
-    $image = basename($_FILES["image"]["name"]); 
+    // Atur direktori target untuk upload
+    $target_dir = "uploads/"; // Sesuaikan dengan path yang benar
+    $image = basename($_FILES["image"]["name"]); // Nama file gambar
 
     if (!empty($image)) {
-        $target_file = $target_dir . $image;
+        $target_file = $target_dir . $image; // Path lengkap file
+        // Pindahkan file yang diunggah ke direktori target
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            // Siapkan dan jalankan pernyataan SQL untuk memasukkan data ke tabel event
             $sql = "INSERT INTO event (name, description, date, time, location, max_participants, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             if ($stmt->execute([$name, $description, $date, $time, $location, $max_participants, $status, $image])) {
+                // Pengalihan setelah berhasil
                 header("Location: dashboard.php");
                 exit();
             } else {

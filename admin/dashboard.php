@@ -7,7 +7,7 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-$events = $pdo->query("SELECT * FROM events")->fetchAll();
+$event = $pdo->query("SELECT * FROM event")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -114,14 +114,16 @@ $events = $pdo->query("SELECT * FROM events")->fetchAll();
     <div class="container mt-5">
         <h1>Manage Events</h1>
         <div class="row">
-            <?php foreach ($events as $event): ?>
+            <?php foreach ($event as $event): ?>
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($event['description']) ?></p>
                             <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
+                            <p><strong>Time:</strong> <?= htmlspecialchars($event['time']) ?></p>
                             <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
+                            <p><strong>Participants:</strong> <?= htmlspecialchars($event['participants_count']) ?></p>
                             <div class="d-flex justify-content-between">
                                 <a href="edit-event.php?id=<?= $event['id'] ?>" class="btn btn-warning">Edit</a>
                                 <a href="delete-event.php?id=<?= $event['id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>

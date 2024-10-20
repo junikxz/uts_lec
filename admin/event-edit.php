@@ -8,7 +8,7 @@ if (!isset($_SESSION['admin'])) {
 require '../config/db.php';
 
 $id = $_GET['id'];
-$stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM event WHERE id = ?");
 $stmt->execute([$id]);
 $event = $stmt->fetch();
 
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $image = $event['image'];
     }
 
-    $stmt = $pdo->prepare("UPDATE events SET name = ?, description = ?, date = ?, location = ?, max_participants = ?, image = ? WHERE id = ?");
+    $stmt = $pdo->prepare("UPDATE event SET name = ?, description = ?, date = ?, location = ?, max_participants = ?, image = ? WHERE id = ?");
     if ($stmt->execute([$name, $description, $date, $location, $max_participants, $image, $id])) {
         header("Location: dashboard.php");
         exit();
