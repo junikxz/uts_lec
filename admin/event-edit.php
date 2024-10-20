@@ -67,8 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" name="location" class="form-control" id="location" value="<?= htmlspecialchars($event['location']) ?>" required>
             </div>
             <div class="mb-3">
+                <label for="time" class="form-label">Time</label>
+                <input type="time" name="time" class="form-control" id="time" required>
+            </div>
+            <div class="mb-3">
                 <label for="max_participants" class="form-label">Max Participants</label>
                 <input type="number" name="max_participants" class="form-control" id="max_participants" value="<?= $event['max_participants'] ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select name="status" class="form-control" id="status" required>
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <option value="canceled">Canceled</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Event Image</label>

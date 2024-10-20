@@ -7,6 +7,7 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
+// Fetch all events
 $event = $pdo->query("SELECT * FROM event")->fetchAll();
 ?>
 
@@ -103,9 +104,7 @@ $event = $pdo->query("SELECT * FROM event")->fetchAll();
                     <li><a href="manage-events.php">Manage Events</a></li>
                 </ul>
             </li>
-            <li><a href="order-page.php">Order Page List</a></li>
-            <li><a href="analytics.php">Analytics Page</a></li>
-            <li><a href="event-reviews.php">Review Page</a></li>
+            <li><a href="order-page.php">Registrants List</a></li>
         </ul>
     </div>
 
@@ -119,14 +118,12 @@ $event = $pdo->query("SELECT * FROM event")->fetchAll();
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
-                            <p class="card-text"><?= htmlspecialchars($event['description']) ?></p>
                             <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
                             <p><strong>Time:</strong> <?= htmlspecialchars($event['time']) ?></p>
                             <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
                             <p><strong>Participants:</strong> <?= htmlspecialchars($event['participants_count']) ?></p>
                             <div class="d-flex justify-content-between">
-                                <a href="edit-event.php?id=<?= $event['id'] ?>" class="btn btn-warning">Edit</a>
-                                <a href="delete-event.php?id=<?= $event['id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
+                                <a href="event-details.php?id=<?= $event['id'] ?>" class="btn btn-primary">See Details</a>
                             </div>
                         </div>
                     </div>

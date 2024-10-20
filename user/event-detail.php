@@ -3,7 +3,7 @@ session_start();
 require '../config/db.php';
 
 $id = $_GET['id'];
-$stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM event WHERE id = ?");
 $stmt->execute([$id]);
 $event = $stmt->fetch();
 

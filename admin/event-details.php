@@ -7,20 +7,13 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-$event_id = $_GET['id']; // Ambil event ID
+$event_id = $_GET['id'];
 
-// Ambil detail event
-$stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM event WHERE id = ?");
 $stmt->execute([$event_id]);
 $event = $stmt->fetch();
 
-// Ambil daftar pendaftar untuk event ini
-$registrants = $pdo->prepare("
-    SELECT u.name, u.email, r.registration_date 
-    FROM registrations r
-    JOIN users u ON r.user_id = u.id
-    WHERE r.event_id = ?
-");
+$registrants = $pdo->prepare("SELECT * FROM registrations WHERE event_id = ?");
 $registrants->execute([$event_id]);
 $registrant_list = $registrants->fetchAll();
 ?>
@@ -30,21 +23,25 @@ $registrant_list = $registrants->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Registrants</title>
+    <title>Event Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Registrants for <?= htmlspecialchars($event['name']) ?></h1>
+        <h1>Event: <?= htmlspecialchars($event['name']) ?></h1>
+        <p><strong>Description:</strong> <?= htmlspecialchars($event['description']) ?></p>
         <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
+        <p><strong>Time:</strong> <?= htmlspecialchars($event['time']) ?></p>
         <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
+        <p><strong>Max Participants:</strong> <?= htmlspecialchars($event['max_participants']) ?></p>
 
+        <h3>Registrants</h3>
         <?php if (count($registrant_list) > 0): ?>
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Additional Info</th>
                         <th>Registration Date</th>
                     </tr>
                 </thead>
@@ -52,17 +49,21 @@ $registrant_list = $registrants->fetchAll();
                     <?php foreach ($registrant_list as $registrant): ?>
                         <tr>
                             <td><?= htmlspecialchars($registrant['name']) ?></td>
-                            <td><?= htmlspecialchars($registrant['email']) ?></td>
+                            <td><?= htmlspecialchars($registrant['additional_info']) ?></td>
                             <td><?= htmlspecialchars($registrant['registration_date']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         <?php else: ?>
-            <p>No registrants for this event.</p>
+            <p>No registrants for this event yet.</p>
         <?php endif; ?>
 
-        <a href="dashboard.php" class="btn btn-primary mt-3">Back to Dashboard</a>
+        <div class="d-flex justify-content-between mt-3">
+            <a href="event-edit.php?id=<?= $event['id'] ?>" class="btn btn-warning">Edit</a>
+            <a href="event-delete.php?id=<?= $event['id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
+        </div>
+        <a href="dashboard.php" class="btn btn-secondary mt-3">Back to Dashboard</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

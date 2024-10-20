@@ -3,9 +3,9 @@ session_start();
 require '../config/db.php';
 
 // Fetch all events that are available (not full)
-$events = $pdo->query("
+$event = $pdo->query("
     SELECT e.*, COUNT(r.id) AS total_registered 
-    FROM events e
+    FROM event e
     LEFT JOIN registrations r ON e.id = r.event_id
     GROUP BY e.id
     HAVING total_registered < e.max_participants
@@ -70,8 +70,8 @@ $events = $pdo->query("
     <div class="container mt-5">
         <h1>Available Events</h1>
         <div class="row">
-            <?php if (count($events) > 0): ?>
-                <?php foreach ($events as $event): ?>
+            <?php if (count($event) > 0): ?>
+                <?php foreach ($event as $event): ?>
                     <div class="col-md-4 mb-4">
                         <div class="card">
                             <img src="../uploads/<?= htmlspecialchars($event['image']) ?>" class="card-img-top" alt="Event Image">
