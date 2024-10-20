@@ -2,7 +2,6 @@
 session_start();
 require '../config/db.php';
 
-// Fetch all events that are available (not full)
 $event = $pdo->query("
     SELECT e.*, COUNT(r.id) AS total_registered 
     FROM event e

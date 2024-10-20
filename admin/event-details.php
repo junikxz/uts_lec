@@ -48,9 +48,9 @@ $registrant_list = $registrants->fetchAll();
                 <tbody>
                     <?php foreach ($registrant_list as $registrant): ?>
                         <tr>
-                            <td><?= htmlspecialchars($registrant['name']) ?></td>
+                            <td><?= htmlspecialchars($registrant['user_name']) ?></td>
                             <td><?= htmlspecialchars($registrant['additional_info']) ?></td>
-                            <td><?= htmlspecialchars($registrant['registration_date']) ?></td>
+                            <td><?= htmlspecialchars($registrant['created_at']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

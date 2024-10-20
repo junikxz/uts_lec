@@ -1,27 +1,38 @@
 <?php
 require '../config/db.php';
 
-// Ambil semua event yang masih "open" untuk pendaftaran
 $events = $pdo->query("SELECT * FROM event WHERE status = 'open'")->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    $event_id = $_POST['event']; // Event yang dipilih user
+    $selected_events = $_POST['event']; 
 
-    // Insert data user ke dalam tabel users
-    $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-    if ($stmt->execute([$name, $email, $password])) {
-        $user_id = $pdo->lastInsertId(); // Dapatkan user ID dari data yang baru saja dimasukkan
+    try {
+        $pdo->beginTransaction();
 
-        // Insert data ke tabel registrations
-        $stmt_registration = $pdo->prepare("INSERT INTO registrations (user_id, event_id) VALUES (?, ?)");
-        $stmt_registration->execute([$user_id, $event_id]);
+        $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+        if ($stmt->execute([$name, $email, $password])) {
+            $user_id = $pdo->lastInsertId();
 
-        header("Location: login.php?success=1");
-    } else {
-        echo "Error registering!";
+            if (is_array($selected_events) && count($selected_events) > 0) {
+                foreach ($selected_events as $event_id) {
+                    $stmt_registration = $pdo->prepare("INSERT INTO registrations (user_id, event_id) VALUES (?, ?)");
+                    $stmt_registration->execute([$user_id, $event_id]);
+                }
+            }
+
+            $pdo->commit();
+            header("Location: login.php?success=1");
+            exit();
+        } else {
+            $pdo->rollBack();
+            echo "Error registering!";
+        }
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        echo "Error: " . $e->getMessage();
     }
 }
 ?>
@@ -54,15 +65,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" name="password" class="form-control" id="password" required>
                             </div>
+                            
                             <div class="mb-3">
-                                <label for="event" class="form-label">Select Event</label>
-                                <select name="event" class="form-control" id="event" required>
-                                    <option value="">-- Select an Event --</option>
-                                    <?php foreach ($event as $event): ?>
-                                        <option value="<?= $event['id'] ?>"><?= htmlspecialchars($event['name']) ?> (<?= htmlspecialchars($event['date']) ?>)</option>
+                                <label for="events" class="form-label">Select Events</label>
+                                <div>
+                                    <?php foreach ($events as $event): ?>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="event[]" value="<?= $event['id'] ?>" id="event-<?= $event['id'] ?>">
+                                            <label class="form-check-label" for="event-<?= $event['id'] ?>">
+                                                <?= htmlspecialchars($event['name']) ?> (<?= htmlspecialchars($event['date']) ?>)
+                                            </label>
+                                        </div>
                                     <?php endforeach; ?>
-                                </select>
+                                </div>
                             </div>
+                            
                             <button type="submit" class="btn btn-primary">Register</button>
                         </form>
                     </div>
@@ -70,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-// Fetch all events
 $event = $pdo->query("SELECT * FROM event")->fetchAll();
 ?>
 

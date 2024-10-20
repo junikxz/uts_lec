@@ -6,19 +6,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Cek apakah pengguna ada di database
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    // Verifikasi password
     if ($user && password_verify($password, $user['password'])) {
         if ($user['is_admin']) {
-            // Jika admin, set sesi admin dan arahkan ke dashboard admin
             $_SESSION['admin'] = $user['id'];
             header('Location: ../admin/dashboard.php');
         } else {
-            // Jika user biasa, arahkan ke halaman profil user
             $_SESSION['user_id'] = $user['id'];
             header('Location: profile.php');
         }
