@@ -6,7 +6,13 @@ if (!isset($_SESSION['admin'])) {
 }
 
 require '../config/db.php';
-$users = $pdo->query("SELECT * FROM users")->fetchAll();
+
+$registrations = $pdo->query("
+    SELECT r.*, e.name AS event_name
+    FROM registrations r
+    JOIN events e ON r.event_id = e.id
+    ORDER BY r.registration_date DESC
+")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -14,28 +20,28 @@ $users = $pdo->query("SELECT * FROM users")->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
+    <title>Order Page List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
-        <h1>User List</h1>
+        <h1>Order Page List</h1>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+                    <th>Event Name</th>
+                    <th>Registrant Name</th>
+                    <th>Additional Info</th>
+                    <th>Registration Date</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $user): ?>
+                <?php foreach ($registrations as $registration): ?>
                     <tr>
-                        <td><?= htmlspecialchars($user['name']) ?></td>
-                        <td><?= htmlspecialchars($user['email']) ?></td>
-                        <td>
-                            <a href="user-delete.php?id=<?= $user['id'] ?>" class="btn btn-danger">Delete</a>
-                        </td>
+                        <td><?= htmlspecialchars($registration['event_name']) ?></td>
+                        <td><?= htmlspecialchars($registration['name']) ?></td>
+                        <td><?= htmlspecialchars($registration['additional_info']) ?></td>
+                        <td><?= htmlspecialchars($registration['registration_date']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -6,7 +6,14 @@ if (!isset($_SESSION['admin'])) {
 }
 
 require '../config/db.php';
-$users = $pdo->query("SELECT * FROM users")->fetchAll();
+
+$reviews = $pdo->query("
+    SELECT r.*, u.name AS user_name, e.name AS event_name
+    FROM reviews r
+    JOIN users u ON r.user_id = u.id
+    JOIN events e ON r.event_id = e.id
+    ORDER BY r.created_at DESC
+")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -14,28 +21,28 @@ $users = $pdo->query("SELECT * FROM users")->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
+    <title>Review Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
-        <h1>User List</h1>
+        <h1>User Reviews</h1>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+                    <th>User</th>
+                    <th>Event</th>
+                    <th>Review</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $user): ?>
+                <?php foreach ($reviews as $review): ?>
                     <tr>
-                        <td><?= htmlspecialchars($user['name']) ?></td>
-                        <td><?= htmlspecialchars($user['email']) ?></td>
-                        <td>
-                            <a href="user-delete.php?id=<?= $user['id'] ?>" class="btn btn-danger">Delete</a>
-                        </td>
+                        <td><?= htmlspecialchars($review['user_name']) ?></td>
+                        <td><?= htmlspecialchars($review['event_name']) ?></td>
+                        <td><?= htmlspecialchars($review['content']) ?></td>
+                        <td><?= htmlspecialchars($review['created_at']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

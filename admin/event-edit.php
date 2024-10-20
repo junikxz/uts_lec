@@ -18,8 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date = $_POST['date'];
     $location = $_POST['location'];
     $max_participants = $_POST['max_participants'];
-    
-    // Proses update gambar
+
     if (!empty($_FILES['image']['name'])) {
         $image = $_FILES['image']['name'];
         $target_dir = "../uploads/";
@@ -29,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $image = $event['image'];
     }
 
-    // Update event
     $stmt = $pdo->prepare("UPDATE events SET name = ?, description = ?, date = ?, location = ?, max_participants = ?, image = ? WHERE id = ?");
     if ($stmt->execute([$name, $description, $date, $location, $max_participants, $image, $id])) {
         header("Location: dashboard.php");

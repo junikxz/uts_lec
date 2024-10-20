@@ -11,16 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $date = $_POST['date'];
+    $time = $_POST['time'];
     $location = $_POST['location'];
     $max_participants = $_POST['max_participants'];
+    $status = $_POST['status'];
 
     $image = $_FILES['image']['name'];
-    $target_dir = "../uploads/";
+    $target_dir = "../admin/uploads/";
     $target_file = $target_dir . basename($image);
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-        $stmt = $pdo->prepare("INSERT INTO events (name, description, date, location, max_participants, image) VALUES (?, ?, ?, ?, ?, ?)");
-        if ($stmt->execute([$name, $description, $date, $location, $max_participants, $image])) {
+        $stmt = $pdo->prepare("INSERT INTO events (name, description, date, time, location, max_participants, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        if ($stmt->execute([$name, $description, $date, $time, $location, $max_participants, $status, $image])) {
             header("Location: dashboard.php");
             exit();
         } else {
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Create Event</h1>
+        <h1>Create New Event</h1>
         <form method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="name" class="form-label">Event Name</label>
@@ -57,12 +59,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="date" name="date" class="form-control" id="date" required>
             </div>
             <div class="mb-3">
+                <label for="time" class="form-label">Time</label>
+                <input type="time" name="time" class="form-control" id="time" required>
+            </div>
+            <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
                 <input type="text" name="location" class="form-control" id="location" required>
             </div>
             <div class="mb-3">
                 <label for="max_participants" class="form-label">Max Participants</label>
                 <input type="number" name="max_participants" class="form-control" id="max_participants" required>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select name="status" class="form-control" id="status" required>
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <option value="canceled">Canceled</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Event Image</label>

@@ -8,7 +8,6 @@ if (!isset($_SESSION['admin'])) {
 require '../config/db.php';
 
 $id = $_GET['id'];
-
 $stmt = $pdo->prepare("DELETE FROM events WHERE id = ?");
 if ($stmt->execute([$id])) {
     header("Location: dashboard.php");

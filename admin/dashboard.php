@@ -7,12 +7,7 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-$events = $pdo->query("
-    SELECT e.*, COUNT(r.id) AS total_registered 
-    FROM events e
-    LEFT JOIN registrations r ON e.id = r.event_id
-    GROUP BY e.id
-")->fetchAll();
+$events = $pdo->query("SELECT * FROM events")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -22,41 +17,131 @@ $events = $pdo->query("
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f7fa;
+        }
+        .navbar {
+            background-color: #343a40;
+        }
+        .navbar-brand {
+            color: white;
+        }
+        .side-menu {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            height: 100%;
+            background-color: #343a40;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .side-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+        .side-menu ul li {
+            padding: 20px;
+            border-bottom: 1px solid #464a4d;
+        }
+        .side-menu ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .side-menu ul li:hover {
+            background-color: #495057;
+        }
+        .side-menu.open {
+            left: 0;
+        }
+        .menu-icon {
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+        }
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            display: none;
+        }
+        .overlay.show {
+            display: block;
+        }
+        .submenu {
+            display: none;
+        }
+        .submenu li {
+            padding-left: 20px;
+            background-color: #495057;
+        }
+        .submenu.open {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1>Admin Dashboard</h1>
-            <a href="event-create.php" class="btn btn-primary">Create New Event</a>
-            <a href="logout.php" class="btn btn-danger">Logout</a>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+            <a class="navbar-brand ms-3" href="#">Admin Dashboard</a>
         </div>
-        <div class="row mt-4">
-            <?php if (count($events) > 0): ?>
-                <?php foreach ($events as $event): ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="../uploads/<?= htmlspecialchars($event['image']) ?>" class="card-img-top" alt="Event Image">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
-                                <p class="card-text"><?= htmlspecialchars($event['description']) ?></p>
-                                <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
-                                <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
-                                <p><strong>Total Registered:</strong> <?= $event['total_registered'] ?>/<?= $event['max_participants'] ?></p>
-                                <div class="d-flex justify-content-between">
-                                    <a href="event-registrations.php?id=<?= $event['id'] ?>" class="btn btn-info">View Registrants</a>
-                                    <a href="event-edit.php?id=<?= $event['id'] ?>" class="btn btn-warning">Edit</a>
-                                    <a href="event-delete.php?id=<?= $event['id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
-                                </div>
+    </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+            <li>
+                <a href="javascript:void(0)" onclick="toggleSubmenu()">Dashboard</a>
+                <ul class="submenu" id="submenu">
+                    <li><a href="dashboard.php">View All Events</a></li>
+                    <li><a href="event-create.php">Create Event</a></li>
+                    <li><a href="manage-events.php">Manage Events</a></li>
+                </ul>
+            </li>
+            <li><a href="order-page.php">Order Page List</a></li>
+            <li><a href="analytics.php">Analytics Page</a></li>
+            <li><a href="event-reviews.php">Review Page</a></li>
+        </ul>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <div class="container mt-5">
+        <h1>Manage Events</h1>
+        <div class="row">
+            <?php foreach ($events as $event): ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
+                            <p class="card-text"><?= htmlspecialchars($event['description']) ?></p>
+                            <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
+                            <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
+                            <div class="d-flex justify-content-between">
+                                <a href="edit-event.php?id=<?= $event['id'] ?>" class="btn btn-warning">Edit</a>
+                                <a href="delete-event.php?id=<?= $event['id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No events found. <a href="event-create.php">Create a new event</a>.</p>
-            <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
+    <script>
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
+        }
+        function toggleSubmenu() {
+            document.getElementById('submenu').classList.toggle('open');
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
