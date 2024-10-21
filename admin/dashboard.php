@@ -7,7 +7,31 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-$event = $pdo->query("SELECT * FROM event")->fetchAll();
+$today = date('Y-m-d');
+
+$openEvents = $pdo->query("
+    SELECT event.*, COUNT(registrations.user_id) AS participants_count
+    FROM event
+    LEFT JOIN registrations ON event.id = registrations.event_id
+    WHERE date >= '$today' AND status = 'open'
+    GROUP BY event.id
+")->fetchAll();
+
+$closedEvents = $pdo->query("
+    SELECT event.*, COUNT(registrations.user_id) AS participants_count
+    FROM event
+    LEFT JOIN registrations ON event.id = registrations.event_id
+    WHERE date < '$today' AND status = 'closed'
+    GROUP BY event.id
+")->fetchAll();
+
+$cancelledEvents = $pdo->query("
+    SELECT event.*, COUNT(registrations.user_id) AS participants_count
+    FROM event
+    LEFT JOIN registrations ON event.id = registrations.event_id
+    WHERE status = 'canceled'
+    GROUP BY event.id
+")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -100,10 +124,9 @@ $event = $pdo->query("SELECT * FROM event")->fetchAll();
                 <ul class="submenu" id="submenu">
                     <li><a href="dashboard.php">View All Events</a></li>
                     <li><a href="event-create.php">Create Event</a></li>
-                    <li><a href="manage-events.php">Manage Events</a></li>
                 </ul>
             </li>
-            <li><a href="order-page.php">Registrants List</a></li>
+            <li><a href="user-management.php">Registrants List</a></li>
         </ul>
     </div>
 
@@ -111,25 +134,84 @@ $event = $pdo->query("SELECT * FROM event")->fetchAll();
 
     <div class="container mt-5">
         <h1>Manage Events</h1>
-        <div class="row">
-            <?php foreach ($event as $event): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
-                            <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
-                            <p><strong>Time:</strong> <?= htmlspecialchars($event['time']) ?></p>
-                            <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
-                            <p><strong>Participants:</strong> <?= htmlspecialchars($event['participants_count']) ?></p>
-                            <div class="d-flex justify-content-between">
-                                <a href="event-details.php?id=<?= $event['id'] ?>" class="btn btn-primary">See Details</a>
-                            </div>
+        
+        <h2>Open Events</h2>
+        <h2>Open Events</h2>
+<div class="row">
+    <?php if (empty($openEvents)): ?>
+        <p>No open events available.</p>
+    <?php else: ?>
+        <?php foreach ($openEvents as $event): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="../uploads/<?= htmlspecialchars($event['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($event['name']) ?>">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
+                        <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
+                        <p><strong>Time:</strong> <?= htmlspecialchars($event['time']) ?></p>
+                        <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
+                        <p><strong>Participants:</strong> <?= htmlspecialchars($event['participants_count']) ?></p>
+                        <div class="d-flex justify-content-between">
+                            <a href="event-details.php?id=<?= $event['id'] ?>" class="btn btn-primary">See Details</a>
+                            <a href="cancel-event.php?id=<?= $event['id'] ?>" class="btn btn-danger">Cancel Event</a>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
+<h2>Closed Events</h2>
+<div class="row">
+    <?php if (empty($closedEvents)): ?>
+        <p>No closed events available.</p>
+    <?php else: ?>
+        <?php foreach ($closedEvents as $event): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="../uploads/<?= htmlspecialchars($event['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($event['name']) ?>">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
+                        <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
+                        <p><strong>Time:</strong> <?= htmlspecialchars($event['time']) ?></p>
+                        <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
+                        <p><strong>Participants:</strong> <?= htmlspecialchars($event['participants_count']) ?></p>
+                        <div class="d-flex justify-content-between">
+                            <a href="event-details.php?id=<?= $event['id'] ?>" class="btn btn-secondary">See Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
+<h2>Cancelled Events</h2>
+<div class="row">
+    <?php if (empty($cancelledEvents)): ?>
+        <p>No cancelled events available.</p>
+    <?php else: ?>
+        <?php foreach ($cancelledEvents as $event): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="../uploads/<?= htmlspecialchars($event['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($event['name']) ?>">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($event['name']) ?></h5>
+                        <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
+                        <p><strong>Time:</strong> <?= htmlspecialchars($event['time']) ?></p>
+                        <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
+                        <p><strong>Participants:</strong> <?= htmlspecialchars($event['participants_count']) ?></p>
+                        <div class="d-flex justify-content-between">
+                            <a href="event-details.php?id=<?= $event['id'] ?>" class="btn btn-danger">See Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
 
     <script>
         function toggleMenu() {

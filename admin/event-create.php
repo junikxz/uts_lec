@@ -16,11 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $max_participants = $_POST['max_participants'];
     $status = $_POST['status'];
 
-    $target_dir = "../uploads/"; 
+    $target_dir = "./admin/uploads/"; 
     $image = basename($_FILES["image"]["name"]); 
 
     if (!empty($image)) {
         $target_file = $target_dir . $image;
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+        
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
             $sql = "INSERT INTO event (name, description, date, time, location, max_participants, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
@@ -28,13 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: dashboard.php");
                 exit();
             } else {
-                echo "Error creating event!";
+                echo "<div class='alert alert-danger'>Error creating event!</div>";
             }
         } else {
-            echo "Error: Gagal mengunggah file.";
+            echo "<div class='alert alert-danger'>Error: Gagal mengunggah file.</div>";
         }
     } else {
-        echo "Error: Nama file gambar kosong.";
+        echo "<div class='alert alert-danger'>Error: Nama file gambar kosong.</div>";
     }
 }
 ?>
@@ -85,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Event Image</label>
-                <input type="file" name="image" class="form-control" id="image" required>
+                <input type="file" name="image" class="form-control" id="image" accept="image/*" required>
             </div>
             <button type="submit" class="btn btn-primary">Create Event</button>
         </form>

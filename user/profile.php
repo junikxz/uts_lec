@@ -8,11 +8,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM user WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
 
-// Fetch registered events for the user
 $events = $pdo->prepare("SELECT e.* FROM events e INNER JOIN registrations r ON e.id = r.event_id WHERE r.user_id = ?");
 $events->execute([$user_id]);
 $registered_events = $events->fetchAll();

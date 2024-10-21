@@ -7,13 +7,29 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-$event_id = $_GET['id'];
+$event_id = $_GET['id'] ?? null; 
+if ($event_id === null) {
+    echo "<div class='alert alert-danger'>Event ID is missing!</div>";
+    exit();
+}
+
 
 $stmt = $pdo->prepare("SELECT * FROM event WHERE id = ?");
 $stmt->execute([$event_id]);
 $event = $stmt->fetch();
 
-$registrants = $pdo->prepare("SELECT * FROM registrations WHERE event_id = ?");
+if (!$event) {
+    echo "<div class='alert alert-danger'>Event not found!</div>";
+    exit();
+}
+
+
+$registrants = $pdo->prepare("
+    SELECT user.username, user.email, registrations.created_at 
+    FROM registrations 
+    JOIN user ON registrations.user_id = user.id 
+    WHERE registrations.event_id = ?
+");
 $registrants->execute([$event_id]);
 $registrant_list = $registrants->fetchAll();
 ?>
@@ -41,15 +57,15 @@ $registrant_list = $registrants->fetchAll();
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Additional Info</th>
+                        <th>Email</th>
                         <th>Registration Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($registrant_list as $registrant): ?>
                         <tr>
-                            <td><?= htmlspecialchars($registrant['user_name']) ?></td>
-                            <td><?= htmlspecialchars($registrant['additional_info']) ?></td>
+                            <td><?= htmlspecialchars($registrant['username']) ?></td>
+                            <td><?= htmlspecialchars($registrant['email']) ?></td>
                             <td><?= htmlspecialchars($registrant['created_at']) ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -61,6 +77,7 @@ $registrant_list = $registrants->fetchAll();
 
         <div class="d-flex justify-content-between mt-3">
             <a href="event-edit.php?id=<?= $event['id'] ?>" class="btn btn-warning">Edit</a>
+            <a href="event-cancel.php?id=<?= $event['id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this event?')">Cancel Event</a>
             <a href="event-delete.php?id=<?= $event['id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
         </div>
         <a href="dashboard.php" class="btn btn-secondary mt-3">Back to Dashboard</a>

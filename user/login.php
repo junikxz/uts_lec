@@ -6,12 +6,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT * FROM admin WHERE email = ?");
     $stmt->execute([$email]);
-    $user = $stmt->fetch();
+    $admin = $stmt->fetch();
+
+    if (!$admin) {
+        $stmt = $pdo->prepare("SELECT * FROM user WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+    } else {
+        $user = $admin; 
+    }
 
     if ($user && password_verify($password, $user['password'])) {
-        if ($user['is_admin']) {
+        if ($admin) {
             $_SESSION['admin'] = $user['id'];
             header('Location: ../admin/dashboard.php');
         } else {

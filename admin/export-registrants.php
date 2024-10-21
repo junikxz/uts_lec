@@ -7,21 +7,45 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-$event_id = $_GET['id'];
+$events = $pdo->query("
+    SELECT DISTINCT e.id, e.name AS event_name 
+    FROM event e
+    JOIN registrations r ON e.id = r.event_id
+")->fetchAll(PDO::FETCH_ASSOC);
 
-$registrants = $pdo->prepare("SELECT * FROM registrations WHERE event_id = ?");
-$registrants->execute([$event_id]);
-$registrant_list = $registrants->fetchAll();
+if (empty($events)) {
+    echo "No events with registrants found.";
+    exit();
+}
 
 header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename=registrants.csv');
+header('Content-Disposition: attachment; filename=registrants_per_event.csv');
 
 $output = fopen('php://output', 'w');
 
-fputcsv($output, array('Name', 'Additional Info', 'Registration Date'));
+foreach ($events as $event) {
+    fputcsv($output, array($event['event_name'])); 
+    
+    fputcsv($output, array('User Name', 'Email', 'Registration Date'));
 
-foreach ($registrant_list as $registrant) {
-    fputcsv($output, array($registrant['name'], $registrant['additional_info'], $registrant['registration_date']));
+    $registrants = $pdo->prepare("
+        SELECT u.username AS name, u.email, r.created_at
+        FROM registrations r
+        JOIN user u ON r.user_id = u.id
+        WHERE r.event_id = ?
+    ");
+    $registrants->execute([$event['id']]);
+    $registrant_list = $registrants->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach ($registrant_list as $registrant) {
+        fputcsv($output, array(
+            $registrant['name'],     
+            $registrant['email'],    
+            $registrant['created_at'] 
+        ));
+    }
+    
+    fputcsv($output, array()); 
 }
 
 fclose($output);
