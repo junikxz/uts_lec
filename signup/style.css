@@ -1,0 +1,33 @@
+/* Mengatur tampilan form secara keseluruhan */
+form {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading tampilan */
+#heading {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #0d6efd;
+}
+
+/* Atur style untuk form radio */
+.form-label {
+    font-weight: bold;
+}
+
+/* Atur style untuk button */
+button {
+    font-size: 1.2rem;
+    padding: 10px;
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #084298;
+}
