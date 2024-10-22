@@ -1,50 +1,23 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+require '../../config/db.php'; 
+
+// Dapatkan ID event dari URL
+if (!isset($_GET['id'])) {
+    echo "No event ID provided!";
     exit();
 }
 
-require '../config/db.php';
+$event_id = $_GET['id'];
 
-// Fetch all open events
-$events = $pdo->query("SELECT * FROM event WHERE status = 'open'")->fetchAll();
+// Query untuk mengambil detail acara berdasarkan ID event
+$stmt = $pdo->prepare("SELECT * FROM event WHERE id = ?");
+$stmt->execute([$event_id]);
+$event = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_id = $_SESSION['user_id'];
-    $selected_events = isset($_POST['event']) ? $_POST['event'] : [];
-
-    $userCheck = $pdo->prepare("SELECT id FROM user WHERE id = ?");
-    $userCheck->execute([$user_id]);
-
-    if ($userCheck->rowCount() === 0) {
-        echo "<div class='alert alert-danger'>User ID is invalid!</div>";
-        exit();
-    }
-
-    try {
-        $pdo->beginTransaction();
-
-        foreach ($selected_events as $event_id) {
-            $eventCheck = $pdo->prepare("SELECT id FROM event WHERE id = ?");
-            $eventCheck->execute([$event_id]);
-
-            if ($eventCheck->rowCount() > 0) {
-                $stmt_registration = $pdo->prepare("INSERT INTO registrations (user_id, event_id) VALUES (?, ?)");
-                if (!$stmt_registration->execute([$user_id, $event_id])) {
-                    echo "Failed to register for event ID: $event_id<br>";
-                }
-            } else {
-                echo "Event ID $event_id does not exist!<br>";
-            }
-        }
-
-        $pdo->commit();
-        echo "<div class='alert alert-success'>You have successfully registered for the selected events!</div>";
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
-    }
+if (!$event) {
+    echo "Event not found!";
+    exit();
 }
 ?>
 
@@ -53,69 +26,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Detail</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title><?= htmlspecialchars($event['name']) ?> - Event Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .event-title {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .event-details {
+        .event-detail {
+            margin-top: 50px;
             display: flex;
-            justify-content: space-between;
-            gap: 30px;
+            justify-content: center;
+            gap: 20px;
         }
-        .left-section {
-            flex: 3;
-        }
-        .right-section {
+
+        .event-detail .left {
             flex: 1;
+            max-width: 30%;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
         }
+
+        .event-detail .right {
+            flex: 2;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
         .event-image {
             width: 100%;
             height: auto;
+            border-radius: 8px;
             margin-bottom: 20px;
         }
-        .register-btn {
+
+        .event-description {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .event-info {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .register-button {
+            display: block;
             text-align: center;
-            margin-top: 40px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <?php foreach ($events as $event): ?>
-            <div class="card mb-5">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="event-title"><?= htmlspecialchars($event['name']) ?></h2>
-                </div>
-                <div class="card-body">
-                    <div class="event-details">
-                        <!-- Left Section: Image and Description -->
-                        <div class="left-section">
-                            <img src="<?= htmlspecialchars($event['image_url']) ?>" alt="Event Image" class="event-image">
-                            <p><?= htmlspecialchars($event['description']) ?></p>
-                        </div>
 
-                        <!-- Right Section: Date and Location -->
-                        <div class="right-section">
-                            <p><strong>Date:</strong> <?= htmlspecialchars($event['date']) ?></p>
-                            <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
-                        </div>
-                    </div>
-
-                    <!-- Register Button -->
-                    <div class="register-btn">
-                        <form method="POST">
-                            <input type="hidden" name="event[]" value="<?= $event['id'] ?>">
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
+<div class="container event-detail">
+    <!-- Sisi kiri: Tanggal dan Tempat -->
+    <div class="left">
+        <h4>Event Info</h4>
+        <div class="event-info">
+            <strong>Date:</strong> <?= htmlspecialchars($event['date']) ?><br>
+            <strong>Time:</strong> <?= htmlspecialchars($event['time']) ?><br>
+            <strong>Location:</strong> <?= htmlspecialchars($event['location']) ?><br>
+            <strong>Available Seats:</strong> <?= htmlspecialchars($event['max_participants']) ?><br>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Sisi kanan: Gambar dan Deskripsi Event -->
+    <div class="right">
+        <h2 class="text-center"><?= htmlspecialchars($event['name']) ?></h2>
+        <img src="../admin/uploads/<?= htmlspecialchars($event['image']) ?>" alt="<?= htmlspecialchars($event['name']) ?>" class="event-image">
+        
+        <p class="event-description">
+            <?= htmlspecialchars($event['description']) ?>
+        </p>
+        
+        <a href="register.php?id=<?= $event['id'] ?>" class="btn btn-primary register-button">Register Now</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
