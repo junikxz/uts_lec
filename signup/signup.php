@@ -29,9 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         if ($role === 'admin') {
-            $stmt = $pdo->prepare("INSERT INTO admin (username, email, password) VALUES (?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO admin (name, email, password) VALUES (?, ?, ?)");
         } else {
-            $stmt = $pdo->prepare("INSERT INTO user (username, email, password) VALUES (?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO user (name, email, password) VALUES (?, ?, ?)");
         }
 
         if ($stmt->execute([$username, $email, $hashedPassword])) {
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 <div class="container mt-5">
     <h1 id="heading" class="text-center">SignUp</h1>
-    <form name="SignUpForm" class="mx-auto w-75" action="signup.php" method="POST">
+    <form name="SignUpForm" class="mx-auto w-50" action="signup.php" method="POST">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="user" name="user" placeholder="Username" required>
             <label for="user">Username</label>
