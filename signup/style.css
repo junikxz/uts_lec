@@ -1,33 +1,53 @@
-/* Mengatur tampilan form secara keseluruhan */
-form {
-    background-color: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('images/background.png') no-repeat center center;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Heading tampilan */
+.signup-container {
+    display: flex;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.signup-form {
+    width: 100%;
+    padding: 40px;
+    background-color: #fff;
+}
+
 #heading {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #0d6efd;
-}
-
-/* Atur style untuk form radio */
-.form-label {
+    font-size: 2rem;
     font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #0984e3;
 }
 
-/* Atur style untuk button */
-button {
-    font-size: 1.2rem;
-    padding: 10px;
-    background-color: #0d6efd;
-    border: none;
-    border-radius: 5px;
+.form-control {
+    border-radius: 25px;
+    margin-bottom: 15px;
+    border: 2px solid #74b9ff;
+}
+
+.btn-primary {
+    width: 100%;
+    border-radius: 25px;
+    background-color: #0984e3;
+    color: white;
+    font-weight: bold;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #084298;
+.btn-primary:hover {
+    background-color: #6c5ce7;
 }
