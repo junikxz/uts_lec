@@ -15,7 +15,8 @@ CREATE TABLE event (
     time TIME DEFAULT NULL,
     location VARCHAR(255) DEFAULT NULL,
     max_participants INT(11) DEFAULT NULL,
-    image VARCHAR(255) DEFAULT NULL
+    image VARCHAR(255) DEFAULT NULL,
+    status VARCHAR(225)
 );
 
 CREATE TABLE user (
