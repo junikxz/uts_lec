@@ -1,0 +1,16 @@
+.info-header {
+    min-height: 40vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7), rgba(4,9,30,0.7)), url('./asset/background.png');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+
+.info-header h1 {
+    font-size: 3em;
+}

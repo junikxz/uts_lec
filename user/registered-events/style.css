@@ -1,0 +1,29 @@
+body {
+    background-color: #f4f6f9;
+}
+.container {
+    margin-top: 50px;
+}
+.content-box {
+    width: 50%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.event-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.btn-back {
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+}
+.btn-back:hover {
+    background-color: #0056b3;
+}

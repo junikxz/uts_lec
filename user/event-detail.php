@@ -39,18 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Insert data registrasi
             $stmt_registration = $pdo->prepare("INSERT INTO registrations (user_id, event_id) VALUES (?, ?)");
             if ($stmt_registration->execute([$user_id, $event_id])) {
-                echo "<div class='alert alert-success'>You have successfully registered for the event!</div>";
+                echo "<div class='alert alert-success fixed-alert'>You have successfully registered for the event!</div>";
             } else {
-                echo "<div class='alert alert-danger'>Failed to register for this event.</div>";
+                echo "<div class='alert alert-danger fixed-alert'>Failed to register for this event.</div>";
             }
         } else {
-            echo "<div class='alert alert-danger'>Event does not exist!</div>";
+            echo "<div class='alert alert-danger fixed-alert'>Event does not exist!</div>";
         }
 
         $pdo->commit();
     } catch (Exception $e) {
         $pdo->rollBack();
-        echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
+        echo "<div class='alert alert-danger fixed-alert'>Error: " . $e->getMessage() . "</div>";
     }
 }
 ?>
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .event-image {
             width: 50%;
-            height: 50%;
+            height: auto;
             border-radius: 8px;
             margin-bottom: 20px;
         }
@@ -106,9 +106,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .register-button {
-            display: block;
-            text-align: center;
+            display: flex;
+            justify-content: center;
             margin-top: 20px;
+            gap: 10px;
+        }
+
+        /* Styles for fixed alert messages */
+        .fixed-alert {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: auto;
+            max-width: 80%;
         }
     </style>
 </head>
@@ -136,8 +148,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?= htmlspecialchars($event['description']) ?>
             </p>
 
-            <form method="POST">
+            <form method="POST" class="register-button">
                 <button type="submit" class="btn btn-primary">Register for This Event</button>
+                <a href="homepage.php" class="btn btn-secondary">Back to Homepage</a>
             </form>
         </div>
     </div>

@@ -1,0 +1,26 @@
+
+.profile-container {
+    display: flex;
+    margin-top: 50px;
+}
+
+.left-panel {
+    flex: 1;
+    max-width: 300px;
+    text-align: center;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+}
+
+.right-panel {
+    flex: 2;
+    padding: 20px;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}

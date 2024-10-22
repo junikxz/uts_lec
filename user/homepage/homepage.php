@@ -2,13 +2,34 @@
 session_start();
 require '../../config/db.php'; 
 
-$events = $pdo->query("
-    SELECT e.*, COUNT(r.id) AS total_registered 
-    FROM event e
-    LEFT JOIN registrations r ON e.id = r.event_id
-    GROUP BY e.id
-    HAVING total_registered < e.max_participants
-")->fetchAll(PDO::FETCH_ASSOC);
+// Memulai dengan nilai pencarian kosong
+$searchTerm = '';
+
+// Mengecek apakah form pencarian telah dikirim
+if (isset($_GET['search'])) {
+    $searchTerm = $_GET['search'];
+
+    // Menyiapkan query untuk mencari acara
+    $stmt = $pdo->prepare("
+        SELECT e.*, COUNT(r.id) AS total_registered 
+        FROM event e
+        LEFT JOIN registrations r ON e.id = r.event_id
+        WHERE e.name LIKE :searchTerm
+        GROUP BY e.id
+        HAVING total_registered < e.max_participants
+    ");
+    $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
+    $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    // Jika tidak ada pencarian, ambil semua acara
+    $events = $pdo->query("
+        SELECT e.*, COUNT(r.id) AS total_registered 
+        FROM event e
+        LEFT JOIN registrations r ON e.id = r.event_id
+        GROUP BY e.id
+        HAVING total_registered < e.max_participants
+    ")->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +46,7 @@ $events = $pdo->query("
         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
             <div class="container">
                 <a class="navbar-brand" href="homepage.php">
-                    <img src="./asset/Logo.png" alt="Logo" height="50">
+                    <img src="../asset/Logo.png" alt="Logo" height="50">
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,10 +59,10 @@ $events = $pdo->query("
                             <a class="nav-link" href="homepage.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="informations.php">Informations</a>
+                            <a class="nav-link" href="../information.php">Informations</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.php">About Us</a>
+                            <a class="nav-link" href="../aboutus/aboutus.php">About Us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.php">Contact</a>
@@ -50,12 +71,12 @@ $events = $pdo->query("
 
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="profile.php" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="../profile/profile.php" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Profile
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="registered-events.php">Daftar Event</a></li>
-                                <li><a class="dropdown-item" href="edit-profile.php">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="profile.php">Edit Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -78,8 +99,8 @@ $events = $pdo->query("
     <section>
         <div class="header-form text-center mt-3">
             <h1 class="">Search Your Event</h1>
-            <form class="d-flex justify-content-center mt-3">
-                <input type="text" class="form-control w-50" placeholder="Name of event">
+            <form class="d-flex justify-content-center mt-3" action="" method="GET">
+                <input type="text" name="search" class="form-control w-50" placeholder="Name of event" value="<?= htmlspecialchars($searchTerm) ?>">
                 <button type="submit" class="btn btn-primary ms-2">Search</button>
             </form>
         </div>
@@ -97,16 +118,16 @@ $events = $pdo->query("
                                 <p class="event-description"><?= htmlspecialchars($event['description']) ?></p>
                             </div>
                             <div class="event-footer">
-                                <strong>Date: <?= htmlspecialchars($event['date']) ?></strong>
-                                <strong>Time: <?= htmlspecialchars($event['time']) ?></strong>
-                                <strong>Location: <?= htmlspecialchars($event['location']) ?></strong>
-                                <a href="../event-detail.php?= $event['id'] ?>" class="btn btn-primary btn-register">View Details & Register</a>
+                                <strong>Date: <?= htmlspecialchars($event['date']) ?></strong><br>
+                                <strong>Time: <?= htmlspecialchars($event['time']) ?></strong><br>
+                                <strong>Location: <?= htmlspecialchars($event['location']) ?></strong><br>
+                                <a href="../event-detail.php?id=<?= $event['id'] ?>" class="btn btn-primary btn-register">View Details & Register</a>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <h3 class="text-center mb-5">no events available.</h3>
+                <h3 class="text-center mb-5">No events available.</h3>
             <?php endif; ?>
         </div>
     </div>
