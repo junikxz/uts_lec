@@ -2,14 +2,11 @@
 session_start();
 require '../../config/db.php'; 
 
-// Memulai dengan nilai pencarian kosong
 $searchTerm = '';
 
-// Mengecek apakah form pencarian telah dikirim
 if (isset($_GET['search'])) {
     $searchTerm = $_GET['search'];
 
-    // Menyiapkan query untuk mencari acara
     $stmt = $pdo->prepare("
         SELECT e.*, COUNT(r.id) AS total_registered 
         FROM event e
@@ -21,7 +18,6 @@ if (isset($_GET['search'])) {
     $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
     $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    // Jika tidak ada pencarian, ambil semua acara
     $events = $pdo->query("
         SELECT e.*, COUNT(r.id) AS total_registered 
         FROM event e

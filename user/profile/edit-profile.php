@@ -2,7 +2,6 @@
 session_start();
 require '../../config/db.php'; 
 
-// Ambil informasi user berdasarkan session user_id
 $user_id = $_SESSION['user_id'];
 $user = $pdo->prepare("SELECT * FROM user WHERE id = ?");
 $user->execute([$user_id]);
@@ -15,25 +14,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_password = $_POST['new_password'] ?? null;
     $confirm_password = $_POST['confirm_password'] ?? null;
 
-    // Validasi data umum (nama dan email)
     if (empty($name) || empty($email)) {
         $error = "Nama dan email harus diisi.";
     } else {
-        // Update informasi user di database
         $stmt = $pdo->prepare("UPDATE user SET name = ?, email = ? WHERE id = ?");
         $stmt->execute([$name, $email, $user_id]);
 
-        // Jika ada permintaan ubah password
         if (!empty($old_password) && !empty($new_password) && !empty($confirm_password)) {
-            // Periksa apakah password lama benar
             if (password_verify($old_password, $user_info['password'])) {
                 if ($new_password === $confirm_password) {
-                    // Update password di database
                     $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);
                     $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE id = ?");
                     $stmt->execute([$new_password_hashed, $user_id]);
 
-                    // Redirect ke profile.php dengan parameter success
                     header("Location: profile.php?success=1");
                     exit();
                 } else {
@@ -43,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Password lama salah.";
             }
         } else {
-            // Redirect ke profile.php tanpa mengubah password
             header("Location: profile.php?success=1");
             exit();
         }
@@ -63,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container mt-5">
         <h2>Edit Profile</h2>
 
-        <!-- Cek jika ada error -->
         <?php if (isset($error)): ?>
             <div class="alert alert-danger">
                 <?= htmlspecialchars($error) ?>

@@ -54,14 +54,13 @@
       </div>
     </div>
   </nav>
-  <!-- Background Section -->
+
   <section class="about-us">
     <div class="header-title text-center text-white mt-5">
       <h1>About Us</h1>
     </div>
   </section>
 
-  <!-- Team Section -->
   <section class="team">
     <div class="card">
       <div class="img-container">

@@ -7,14 +7,12 @@ if (!isset($_SESSION['user_id'])) {
 
 require '../config/db.php';
 
-// Ambil event ID dari URL
 $event_id = $_GET['id'] ?? null;
 if ($event_id === null) {
     echo "<div class='alert alert-danger'>Event ID is missing!</div>";
     exit();
 }
 
-// Ambil detail event berdasarkan event_id
 $stmt = $pdo->prepare("SELECT * FROM event WHERE id = ? AND status = 'open'");
 $stmt->execute([$event_id]);
 $event = $stmt->fetch();
@@ -24,19 +22,16 @@ if (!$event) {
     exit();
 }
 
-// Jika form submit
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_SESSION['user_id'];
 
     try {
         $pdo->beginTransaction();
 
-        // Periksa apakah event tersedia
         $eventCheck = $pdo->prepare("SELECT id FROM event WHERE id = ?");
         $eventCheck->execute([$event_id]);
 
         if ($eventCheck->rowCount() > 0) {
-            // Insert data registrasi
             $stmt_registration = $pdo->prepare("INSERT INTO registrations (user_id, event_id) VALUES (?, ?)");
             if ($stmt_registration->execute([$user_id, $event_id])) {
                 echo "<div class='alert alert-success fixed-alert'>You have successfully registered for the event!</div>";
@@ -112,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             gap: 10px;
         }
 
-        /* Styles for fixed alert messages */
         .fixed-alert {
             position: fixed;
             top: 10px;
@@ -128,7 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 
     <div class="container event-detail">
-        <!-- Sisi kiri: Tanggal dan Tempat -->
         <div class="left">
             <h4>Event Info</h4>
             <div class="event-info">
@@ -139,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
 
-        <!-- Sisi kanan: Gambar dan Deskripsi Event -->
         <div class="right">
             <h2 class="text-center"><?= htmlspecialchars($event['name']) ?></h2>
             <img src="../admin/uploads/<?= htmlspecialchars($event['image']) ?>" alt="<?= htmlspecialchars($event['name']) ?>" class="event-image">
