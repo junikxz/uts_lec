@@ -1,15 +1,15 @@
 <?php
 session_start();
-require '../../config/db.php';
+require '../config/db.php';
 
-// Cek apakah user sudah login
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+// // Cek apakah user sudah login
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: login.php");
+//     exit();
+// }
 
 // Ambil ID user dari session dan event ID dari form
-$user_id = $_SESSION['user_id'];
+// $user_id = $_SESSION['user_id'];
 $event_id = $_POST['event_id'] ?? null;
 
 if (!$event_id) {

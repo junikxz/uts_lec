@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../../config/db.php'; 
+require '../config/db.php'; 
 
 // Dapatkan ID event dari URL
 if (!isset($_GET['id'])) {

@@ -100,7 +100,7 @@ $events = $pdo->query("
                                 <strong>Date: <?= htmlspecialchars($event['date']) ?></strong>
                                 <strong>Time: <?= htmlspecialchars($event['time']) ?></strong>
                                 <strong>Location: <?= htmlspecialchars($event['location']) ?></strong>
-                                <a href="event-detail.php?id=<?= $event['id'] ?>" class="btn btn-primary btn-register">View Details & Register</a>
+                                <a href="../event-detail.php?= $event['id'] ?>" class="btn btn-primary btn-register">View Details & Register</a>
                             </div>
                         </div>
                     </div>
