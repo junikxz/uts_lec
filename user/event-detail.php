@@ -1,28 +1,63 @@
 <?php
 session_start();
-require '../config/db.php'; 
-
-// Dapatkan ID event dari URL
-if (!isset($_GET['id'])) {
-    echo "No event ID provided!";
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
     exit();
 }
 
-$event_id = $_GET['id'];
+require '../config/db.php';
 
-// Query untuk mengambil detail acara berdasarkan ID event
-$stmt = $pdo->prepare("SELECT * FROM event WHERE id = ?");
+// Ambil event ID dari URL
+$event_id = $_GET['id'] ?? null;
+if ($event_id === null) {
+    echo "<div class='alert alert-danger'>Event ID is missing!</div>";
+    exit();
+}
+
+// Ambil detail event berdasarkan event_id
+$stmt = $pdo->prepare("SELECT * FROM event WHERE id = ? AND status = 'open'");
 $stmt->execute([$event_id]);
-$event = $stmt->fetch(PDO::FETCH_ASSOC);
+$event = $stmt->fetch();
 
 if (!$event) {
-    echo "Event not found!";
+    echo "<div class='alert alert-danger'>Event not found or it's closed!</div>";
     exit();
+}
+
+// Jika form submit
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $user_id = $_SESSION['user_id'];
+
+    try {
+        $pdo->beginTransaction();
+
+        // Periksa apakah event tersedia
+        $eventCheck = $pdo->prepare("SELECT id FROM event WHERE id = ?");
+        $eventCheck->execute([$event_id]);
+
+        if ($eventCheck->rowCount() > 0) {
+            // Insert data registrasi
+            $stmt_registration = $pdo->prepare("INSERT INTO registrations (user_id, event_id) VALUES (?, ?)");
+            if ($stmt_registration->execute([$user_id, $event_id])) {
+                echo "<div class='alert alert-success'>You have successfully registered for the event!</div>";
+            } else {
+                echo "<div class='alert alert-danger'>Failed to register for this event.</div>";
+            }
+        } else {
+            echo "<div class='alert alert-danger'>Event does not exist!</div>";
+        }
+
+        $pdo->commit();
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        echo "<div class='alert alert-danger'>Error: " . $e->getMessage() . "</div>";
+    }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,8 +88,8 @@ if (!$event) {
         }
 
         .event-image {
-            width: 100%;
-            height: auto;
+            width: 50%;
+            height: 50%;
             border-radius: 8px;
             margin-bottom: 20px;
         }
@@ -77,33 +112,37 @@ if (!$event) {
         }
     </style>
 </head>
+
 <body>
 
-<div class="container event-detail">
-    <!-- Sisi kiri: Tanggal dan Tempat -->
-    <div class="left">
-        <h4>Event Info</h4>
-        <div class="event-info">
-            <strong>Date:</strong> <?= htmlspecialchars($event['date']) ?><br>
-            <strong>Time:</strong> <?= htmlspecialchars($event['time']) ?><br>
-            <strong>Location:</strong> <?= htmlspecialchars($event['location']) ?><br>
-            <strong>Available Seats:</strong> <?= htmlspecialchars($event['max_participants']) ?><br>
+    <div class="container event-detail">
+        <!-- Sisi kiri: Tanggal dan Tempat -->
+        <div class="left">
+            <h4>Event Info</h4>
+            <div class="event-info">
+                <strong>Date:</strong> <?= htmlspecialchars($event['date']) ?><br>
+                <strong>Time:</strong> <?= htmlspecialchars($event['time']) ?><br>
+                <strong>Location:</strong> <?= htmlspecialchars($event['location']) ?><br>
+                <strong>Available Seats:</strong> <?= htmlspecialchars($event['max_participants']) ?><br>
+            </div>
+        </div>
+
+        <!-- Sisi kanan: Gambar dan Deskripsi Event -->
+        <div class="right">
+            <h2 class="text-center"><?= htmlspecialchars($event['name']) ?></h2>
+            <img src="../admin/uploads/<?= htmlspecialchars($event['image']) ?>" alt="<?= htmlspecialchars($event['name']) ?>" class="event-image">
+
+            <p class="event-description">
+                <?= htmlspecialchars($event['description']) ?>
+            </p>
+
+            <form method="POST">
+                <button type="submit" class="btn btn-primary">Register for This Event</button>
+            </form>
         </div>
     </div>
 
-    <!-- Sisi kanan: Gambar dan Deskripsi Event -->
-    <div class="right">
-        <h2 class="text-center"><?= htmlspecialchars($event['name']) ?></h2>
-        <img src="../admin/uploads/<?= htmlspecialchars($event['image']) ?>" alt="<?= htmlspecialchars($event['name']) ?>" class="event-image">
-        
-        <p class="event-description">
-            <?= htmlspecialchars($event['description']) ?>
-        </p>
-        
-        <a href="register.php?id=<?= $event['id'] ?>" class="btn btn-primary register-button">Register Now</a>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
