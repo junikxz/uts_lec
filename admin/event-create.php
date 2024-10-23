@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="mb-3">
                 <label for="max_participants" class="form-label">Max Participants</label>
-                <input type="number" name="max_participants" class="form-control" id="max_participants" required>
+                <input type="number" name="max_participants" class="form-control" id="max_participants" min='0' required>
             </div>
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>

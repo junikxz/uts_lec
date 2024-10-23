@@ -23,7 +23,7 @@ if (!$event) {
 }
 
 $registrants = $pdo->prepare("
-    SELECT user.username, user.email, registrations.created_at 
+    SELECT user.name, user.email, registrations.created_at 
     FROM registrations 
     JOIN user ON registrations.user_id = user.id 
     WHERE registrations.event_id = ?
@@ -99,7 +99,7 @@ $registrant_list = $registrants->fetchAll();
                     <tbody>
                         <?php foreach ($registrant_list as $registrant): ?>
                             <tr>
-                                <td><?= htmlspecialchars($registrant['username']) ?></td>
+                                <td><?= htmlspecialchars($registrant['name']) ?></td>
                                 <td><?= htmlspecialchars($registrant['email']) ?></td>
                                 <td><?= htmlspecialchars($registrant['created_at']) ?></td>
                             </tr>

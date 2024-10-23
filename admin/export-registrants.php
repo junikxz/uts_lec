@@ -29,7 +29,7 @@ foreach ($events as $event) {
     fputcsv($output, array('User Name', 'Email', 'Registration Date'));
 
     $registrants = $pdo->prepare("
-        SELECT u.username AS name, u.email, r.created_at
+        SELECT u.name AS name, u.email, r.created_at
         FROM registrations r
         JOIN user u ON r.user_id = u.id
         WHERE r.event_id = ?

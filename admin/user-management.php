@@ -11,7 +11,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $stmt = $pdo->query("
-    SELECT u.id AS user_id, u.username, u.email, GROUP_CONCAT(e.name SEPARATOR ', ') AS events
+    SELECT u.id AS user_id, u.name, u.email, GROUP_CONCAT(e.name SEPARATOR ', ') AS events
     FROM user u
     LEFT JOIN registrations r ON u.id = r.user_id
     LEFT JOIN event e ON r.event_id = e.id
@@ -124,7 +124,7 @@ $users = $stmt->fetchAll();
         <tbody>
             <?php foreach ($users as $user): ?>
                 <tr>
-                    <td><?= htmlspecialchars($user['username']) ?></td>
+                    <td><?= htmlspecialchars($user['name']) ?></td>
                     <td><?= htmlspecialchars($user['email']) ?></td>
                     <td><?= htmlspecialchars($user['events'] ?: 'No events registered') ?></td>
                     <td>
