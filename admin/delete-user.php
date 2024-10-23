@@ -18,7 +18,6 @@ if ($delete_registrations->execute([$user_id])) {
     echo "Registrations deleted.<br>"; 
 }
 
-// Hapus data user dari tabel `user`
 $stmt = $pdo->prepare("DELETE FROM user WHERE id = ?");
 if ($stmt->execute([$user_id])) {
     echo "User deleted.<br>"; 

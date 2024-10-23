@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin'])) {
 
 require '../config/db.php';
 
-// Fetch events and their registration counts
 $stmt = $pdo->query("
     SELECT event.id, event.name, COUNT(registrations.event_id) AS registrant_count 
     FROM event 
@@ -36,9 +35,18 @@ foreach ($events as $event) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Analytics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="navbar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style> 
+
+
+    .container h1{
+        color: #3a3a91;
+    }
+    </style>
 </head>
 <body>
+<?php include 'navbar.php'; ?>
     <div class="container mt-5">
         <h1>Event Analytics</h1>
         <canvas id="eventChart" width="400" height="200"></canvas>
@@ -52,7 +60,7 @@ foreach ($events as $event) {
                     datasets: [{
                         label: 'Number of Registrants',
                         data: <?= json_encode($event_counts) ?>,
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        backgroundColor: '#3a3a91',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                     }]
@@ -66,8 +74,6 @@ foreach ($events as $event) {
                 }
             });
         </script>
-
-        <a href="dashboard.php" class="btn btn-secondary mt-3">Back to Dashboard</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
