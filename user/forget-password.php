@@ -10,13 +10,13 @@ if (isset($_POST['reset_password'])) {
     $birthdate = htmlspecialchars($_POST['birthdate']); 
 
     $stmt = $pdo->prepare("SELECT * FROM user WHERE name = ? AND email = ? AND phone_number = ? AND birthdate = ?");
-    $stmt->execute([$name, $email, $phone, $birthdate]);
+    $stmt->execute([$username, $email, $phone, $birthdate]);
     $user = $stmt->fetch();
 
     if ($user) {
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
         $updateStmt = $pdo->prepare("UPDATE user SET password = ? WHERE email = ? AND name = ?");
-        $updateStmt->execute([$hashedPassword, $email, $name]);
+        $updateStmt->execute([$hashedPassword, $email, $username]);
 
         $message = "Password Anda telah diperbarui.";
     } else {
