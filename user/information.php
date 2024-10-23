@@ -14,7 +14,7 @@
     <section>
         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <a class="navbar-brand" href="homepage.php">
+                <a class="navbar-brand" href="homepage/homepage.php">
                     <img src="./asset/Logo.png" alt="Logo" height="50">
                 </a>
 

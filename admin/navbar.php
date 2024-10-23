@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <a class="navbar-brand" href="homepage.php">
+        <a class="navbar-brand" href="dashboard.php">
             <img src="Logo.png" alt="Logo" height="50">
         </a>
 
