@@ -10,7 +10,50 @@
     position: relative;
 }
 
-
+    
 .info-header h1 {
-    font-size: 3em;
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.kapital {
+    font-weight: bold;
+    color: #4323c4;
+    font-size: 28px;
+}
+
+.container p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.menarik {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 40px 0;
+}
+
+.menarik p {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
+    color: #333;
+}
+
+.how-to-register {
+    margin-top: 40px;
+}
+
+.how-to-register h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.how-to-register p {
+    font-size: 18px;
+    line-height: 1.6;
 }

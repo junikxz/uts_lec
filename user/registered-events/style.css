@@ -1,6 +1,19 @@
 body {
     background-color: #f4f6f9;
 }
+
+.header-title {
+    min-height: 40vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7), rgba(4,9,30,0.7)), url('../asset/background.png');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
 .container {
     margin-top: 50px;
 }

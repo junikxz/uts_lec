@@ -40,9 +40,13 @@ $events = $registrations->fetchAll(PDO::FETCH_ASSOC);
         </div>
     <?php endif; ?>
 
+    <div class="container mt-4">
+        <a href="../homepage/homepage.php" class="btn btn-primary mt-4">Kembali ke Homepage</a>
+    </div>
+
     <div class="container profile-container">
         <div class="left-panel">
-            <img src="./path/to/profile-pic.jpg" alt="Profile Picture" class="profile-pic">
+            <img src="https://img.icons8.com/?size=100&id=IzemTAHM11pn&format=png&color=7950F2" alt="Profile Picture" class="profile-pic">
             <h4><?= htmlspecialchars($user_info['name']) ?></h4>
             <p><?= htmlspecialchars($user_info['email']) ?></p>
             <a href="edit-profile.php" class="btn btn-primary mt-4">Edit Profile</a>

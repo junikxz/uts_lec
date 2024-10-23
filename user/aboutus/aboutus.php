@@ -32,7 +32,7 @@
             <a class="nav-link" href="aboutus.php">About Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="contact.php">Contact</a>
+            <a class="nav-link" href="../contact.php">Contact</a>
           </li>
         </ul>
 
@@ -61,47 +61,61 @@
     </div>
   </section>
 
-  <section class="team">
-    <div class="card">
-      <div class="img-container">
-        <img src="agnes.jpg" alt="agnes">
-        <div class="overlay">
-          <p>Lorem Ipsum </p>
-        </div>
-      </div>
-      <h3>Agnes Devita W</h3>
-    </div>
+  <div class="container my-5">
+        <div class="row text-center">
+        <div class="col-md-12 text-center w-75 mx-auto">
+    <p class="lead">MenarikNih Events dipersembahkan oleh 4 manusia kalong. </p>
 
-    <div class="card">
-      <div class="img-container">
-        <img src="agnes.jpg" alt="agnes">
-        <div class="overlay">
-          <p>Lorem Ipsum </p>
+  <div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="./foto/agnes.jpg" alt="Agnes Devita" class="card-img-top">
+                <div class="overlay text-white">
+                    <h3>Agnes Devita</h3>
+                    <p>apa itu umur 20</p>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <h3>Feli Sabatini</h3>
-    </div>
 
-    <div class="card">
-      <div class="img-container">
-        <img src="team3.jpg" alt="karen">
-        <div class="overlay">
-          <p>Lorem Ipsum </p>
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="./foto/feli.jpg" alt="Felicia Sabatini" class="card-img-top">
+                <div class="overlay text-white">
+                    <h3>Felicia Sabatini</h3>
+                    <p>Profesional Sleeper</p>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <h3>Karen Yapranata</h3>
-    </div>
 
-    <div class="card">
-      <div class="img-container">
-        <img src="team4.jpg" alt="livia">
-        <div class="overlay">
-          <p>Lorem Ipsum </p>
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="./foto/karen.jpg" alt="Karen Yapranata" class="card-img-top">
+                <div class="overlay text-white">
+                    <h3>Karen Yapranata</h3>
+                    <p>semangattttttt</p>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <h3>Livia Junike</h3>
+
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="./foto/livia.jpg" alt="Livia Junike" class="card-img-top">
+                <div class="overlay text-white">
+                    <h3>Livia Junike</h3>
+                    <p>Tuhan Yesus, kita usahakan nilai A di semua matkul itu</p>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
+</div>
+
+ 
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

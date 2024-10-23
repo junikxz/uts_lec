@@ -67,29 +67,29 @@
 }
 
 .event-col img {
-    width: 100%; /* Mengatur lebar gambar agar responsif */
-    height: auto; /* Memastikan gambar tetap proporsional */
+    width: 100%; 
+    height: auto; 
 }
 
 .layer {
     position: absolute;
-    bottom: 0; /* Posisi di bagian bawah */
+    bottom: 0; 
     left: 0;
     right: 0;
-    height: 100%; /* Mengisi seluruh tinggi gambar */
-    background: rgba(0, 0, 0, 0.5); /* Gradien gelap */
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.5); 
     color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    opacity: 0; /* Mengawali dengan tidak terlihat */
-    transition: opacity 0.3s; /* Animasi transisi */
+    opacity: 0; 
+    transition: opacity 0.3s; 
 }
 
 .event-col:hover .layer {
-    opacity: 1; /* Tampilkan layer saat hover */
+    opacity: 1; 
 }
 
 .event-card {

@@ -55,13 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container mt-5">
         <h2>Edit Profile</h2>
 
+        <div class="text-end mb-3">
+            <a href="profile.php" class="btn btn-primary">Kembali ke Profil</a>
+        </div>
+
         <?php if (isset($error)): ?>
             <div class="alert alert-danger">
                 <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="edit-profile.php">
+        <form method="POST" action="edit-profile.php" class="mt-3">
             <div class="mb-3">
                 <label for="name" class="form-label">Nama</label>
                 <input type="text" name="name" id="name" class="form-control" value="<?= htmlspecialchars($user_info['name']) ?>" required>
@@ -86,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <button type="submit" class="btn btn-primary">Update Profile</button>
+            
         </form>
     </div>
 

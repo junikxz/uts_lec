@@ -1,0 +1,46 @@
+.header-title {
+    min-height: 40vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7), rgba(4,9,30,0.7)), url('./asset/background.png');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.contact-container {
+    margin-top: 100px;
+    padding: 50px 0;
+}
+
+.contact-card {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: scale(1.05);
+}
+
+.contact-card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+.contact-card h5 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.contact-card p {
+    font-size: 1rem;
+    color: #555;
+}
