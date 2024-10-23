@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($stmt->execute([$username, $email, $hashedPassword, $birthdate, $phone])) {
                 echo "<script>
                     alert('Signup successful! Please login.');
-                    window.location.href = '../dashboard.php';
+                    window.location.href = '../user/login.php';
                     </script>";
             } else { 
                 echo "<script>

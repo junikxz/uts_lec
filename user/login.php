@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('images/background.png') no-repeat center center;
+            background: url('images/background.jpg') no-repeat center center;
             background-size: cover;
             font-family: 'Poppins', sans-serif;
         }
@@ -67,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .login-image {
-            width: 50%;
-            background: url('images/login-picture.jpeg') no-repeat center center;
+            width: 70%;
+            background: url('images/background.jpg');
             background-size: cover;
         }
 
@@ -83,19 +83,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-weight: bold;
             margin-bottom: 20px;
             text-align: center;
-            color: #0984e3;
+            color: #2f0e63;
         }
 
         .form-control {
             border-radius: 25px;
             margin-bottom: 20px;
-            border: 2px solid #74b9ff;
+            border: 2px solid #2f0e63;
         }
 
         .btn-login {
             width: 100%;
             border-radius: 25px;
-            background-color: #0984e3;
+            background-color: #2f0e63;
             color: white;
             font-weight: bold;
             transition: background-color 0.3s ease;
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .forget-password a {
-            color: #0984e3;
+            color: #191970;
             text-decoration: none;
             font-weight: bold;
         }

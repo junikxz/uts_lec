@@ -5,7 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('images/background.png') no-repeat center center;
+    background: url('../user/asset/background.jpg') no-repeat center center;
     background-size: cover;
     font-family: 'Poppins', sans-serif;
 }
@@ -22,7 +22,7 @@ body {
 .signup-form {
     width: 100%;
     padding: 40px;
-    background-color: #fff;
+    background-color: #2f0e63;
 }
 
 #heading {
@@ -30,19 +30,19 @@ body {
     font-weight: bold;
     margin-bottom: 20px;
     text-align: center;
-    color: #0984e3;
+    color: white;
 }
 
 .form-control {
     border-radius: 25px;
     margin-bottom: 15px;
-    border: 2px solid #74b9ff;
+    border: 2px solid #191970;
 }
 
 .btn-primary {
     width: 100%;
     border-radius: 25px;
-    background-color: #0984e3;
+    background-color: #191970;
     color: white;
     font-weight: bold;
     transition: background-color 0.3s ease;
