@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_event_id'])) {
 
         <!-- Tombol Kembali ke Halaman Utama -->
         <div class="text-end mb-4">
-            <a href="homepage.php" class="btn btn-back">Kembali ke Halaman Utama</a>
+            <a href="../homepage/homepage.php" class="btn btn-back">Kembali ke Halaman Utama</a>
         </div>
 
         <!-- Konten yang dibungkus dalam kotak dengan w-50 -->
