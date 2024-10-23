@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <form method="POST" class="register-button">
                 <button type="submit" class="btn btn-primary">Register for This Event</button>
-                <a href="homepage.php" class="btn btn-secondary">Back to Homepage</a>
+                <a href="homepage/homepage.php" class="btn btn-secondary">Back to Homepage</a>
             </form>
         </div>
     </div>

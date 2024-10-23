@@ -71,8 +71,8 @@ if (isset($_GET['search'])) {
                                 Profile
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="registered-events.php">Daftar Event</a></li>
-                                <li><a class="dropdown-item" href="profile.php">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="registered-events/registered-events.php">Daftar Event</a></li>
+                                <li><a class="dropdown-item" href="profile/profile.php">Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
