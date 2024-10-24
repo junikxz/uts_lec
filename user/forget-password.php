@@ -41,28 +41,30 @@ if (isset($_POST['reset_password'])) {
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('images/background.png') no-repeat center center;
+            background: url('asset/background.jpg') no-repeat center center;
             background-size: cover;
             font-family: 'Poppins', sans-serif;
         }
 
         .reset-container {
             display: flex;
-            width: 80%;
+            flex-wrap: wrap;
+            width: 100%;
             max-width: 900px;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px;
         }
 
         .reset-image {
-            width: 50%;
-            background: url('images/login-picture.jpeg') no-repeat center center;
+            flex: 1 1 50%;
+            background: url('images/background.jpg') no-repeat center center;
             background-size: cover;
         }
 
         .reset-form {
-            width: 50%;
+            flex: 1 1 50%;
             padding: 40px;
             background-color: #fff;
         }
@@ -107,6 +109,17 @@ if (isset($_POST['reset_password'])) {
 
         .back-to-login a:hover {
             text-decoration: underline;
+        }
+
+        @media (max-width: 768px){
+            .reset-image{
+                display: none;
+            }
+
+            .reset-form {
+                flex: 1 1 100%;
+                padding: 20px;
+            }
         }
     </style>
 </head>

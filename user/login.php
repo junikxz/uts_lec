@@ -51,21 +51,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .login-container {
             display: flex;
-            width: 80%;
+            flex-wrap: wrap;
+            width: 100%;
             max-width: 900px;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px;
         }
 
         .login-image {
-            width: 70%;
+            flex: 1 1 40%;
             background: url('images/background.jpg');
             background-size: cover;
+            background-position: center;
         }
 
         .login-form {
-            width: 50%;
+            flex: 1 1 60%;
             padding: 40px;
             background-color: #fff;
         }
@@ -125,6 +128,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             50% {
                 transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-image{
+                display: none;
+            }
+            .login-form{
+                flex: 1 1 100%;
+                padding 20%;
             }
         }
     </style>
