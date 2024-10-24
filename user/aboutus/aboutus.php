@@ -74,7 +74,7 @@
                 <div class="overlay text-white">
                     <h3>Agnes Devita</h3>
                     <p>apa itu umur 20</p>
-                    <a href="#">Instagram</a>
+                    <a href="https://www.instagram.com/agnesdevita01?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
                 <div class="overlay text-white">
                     <h3>Felicia Sabatini</h3>
                     <p>Profesional Sleeper</p>
-                    <a href="#">Instagram</a>
+                    <a href="https://www.instagram.com/felicia_s_g/profilecard/?igsh=a2FldThoZW5iOHRk" target="_blank">Instagram</a>
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@
                 <div class="overlay text-white">
                     <h3>Karen Yapranata</h3>
                     <p>semangattttttt</p>
-                    <a href="#">Instagram</a>
+                    <a href="https://www.instagram.com/karenyapranataa?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
                 <div class="overlay text-white">
                     <h3>Livia Junike</h3>
                     <p>Tuhan Yesus, kita usahakan nilai A di semua matkul itu</p>
-                    <a href="#">Instagram</a>
+                    <a href="https://www.instagram.com/junikxz?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
                 </div>
             </div>
         </div>
