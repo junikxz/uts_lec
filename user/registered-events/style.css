@@ -40,3 +40,9 @@ body {
 .btn-back:hover {
     background-color: #0056b3;
 }
+
+@media only screen and (max-width: 768px) {
+    .content-box{
+        width : 75%;
+    }
+}
