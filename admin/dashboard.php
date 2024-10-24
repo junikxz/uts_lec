@@ -22,18 +22,20 @@ $sql = "
 if ($filterStatus == 'open') {
     $sql .= " AND date >= '$today' AND status = 'open'";
 } elseif ($filterStatus == 'closed') {
-    $sql .= " AND date < '$today' AND status = 'closed'";
+    $sql .= " AND (date < '$today' OR status = 'closed')";
 } elseif ($filterStatus == 'cancelled') {
     $sql .= " AND status = 'canceled'";
 }
+
+$sql .= " AND status IN ('open', 'closed', 'canceled')";
 
 $sql .= " GROUP BY event.id";
 
 if ($filterStatus == 'all') {
     $sql .= " ORDER BY 
                 CASE 
-                    WHEN status = 'open' THEN 1 
-                    WHEN status = 'closed' THEN 2
+                    WHEN date >= '$today' AND status = 'open' THEN 1 
+                    WHEN date < '$today' OR status = 'closed' THEN 2
                     WHEN status = 'canceled' THEN 3
                 END, date ASC";
 } else {
@@ -155,7 +157,7 @@ $events = $stmt->fetchAll();
 <body>
     <?php include 'navbar.php'; ?>
 
-    <div class="header-title ">
+    <div class="header-title">
         <div>
             <h1>Welcome to the Admin Dashboard</h1>
             <a href="#manage-events" class="btn btn-light mt-3" id="scrollButton">Click Here</a>
@@ -186,9 +188,9 @@ $events = $stmt->fetchAll();
                     $cardClass = '';
                     if ($event['status'] == 'canceled') {
                         $cardClass = 'bg-danger text-white';
-                    } elseif ($event['status'] == 'closed') {
+                    } elseif ($event['status'] == 'closed' || $event['date'] < $today) {
                         $cardClass = 'bg-light text-dark';
-                    } elseif ($event['status'] == 'open') {
+                    } elseif ($event['status'] == 'open' && $event['date'] >= $today) {
                         $cardClass = 'bg-primary text-white';
                     }
 
@@ -202,9 +204,9 @@ $events = $stmt->fetchAll();
                             <div class="event-body">
                                 <h5 class="event-title"><?= htmlspecialchars($event['name']) ?></h5>
 
-                                <?php if ($event['status'] == 'open'): ?>
+                                <?php if ($event['status'] == 'open' && $event['date'] >= $today): ?>
                                     <p class="text-white">This event is currently open for registration.</p>
-                                <?php elseif ($event['status'] == 'closed'): ?>
+                                <?php elseif ($event['status'] == 'closed' || $event['date'] < $today): ?>
                                     <p class="text-dark">This event is closed. Registration is no longer available.</p>
                                 <?php elseif ($event['status'] == 'canceled'): ?>
                                     <p class="text-white">This event has been canceled.</p>
