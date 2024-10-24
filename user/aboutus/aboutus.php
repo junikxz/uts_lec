@@ -73,7 +73,7 @@
                 <img src="./foto/agnes.jpg" alt="Agnes Devita" class="card-img-top">
                 <div class="overlay text-white">
                     <h3>Agnes Devita</h3>
-                    <p>apa itu umur 20</p>
+                    <p>Namun baik juga perbuatanmu, bahwa kamu telah mengambil bagian dari kesusahanku.</p>
                     <a href="https://www.instagram.com/agnesdevita01?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
                 </div>
             </div>
