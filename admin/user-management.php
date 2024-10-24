@@ -29,6 +29,45 @@ $users = $stmt->fetchAll();
     <link rel="stylesheet" href="navbar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+
+@media (max-width: 768px) {
+        .container {
+            width: 100%; /* Pastikan container menyesuaikan dengan layar kecil */
+            padding: 1rem;
+        }
+        .table {
+            font-size: 0.9rem; /* Ukuran font lebih kecil */
+        }
+        .table th, .table td {
+            padding: 0.5rem; /* Kurangi padding di layar kecil */
+        }
+        h1, h3 {
+            font-size: 1.5rem; /* Ukuran font heading lebih kecil di layar kecil */
+        }
+        .btn {
+            font-size: 0.9rem; /* Ukuran tombol lebih kecil di layar kecil */
+            padding: 0.5rem 1rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .container {
+            width: 100%; /* Pastikan container menyesuaikan dengan layar kecil */
+            padding: 1rem;
+        }
+        .table {
+            font-size: 0.5rem; /* Ukuran font lebih kecil */
+        }
+        .table th, .table td {
+            padding: 0.25rem; /* Kurangi padding di layar kecil */
+        }
+        h1, h3 {
+            font-size: 1rem; /* Ukuran font heading lebih kecil di layar kecil */
+        }
+        .btn {
+            font-size: 0.5rem; /* Ukuran tombol lebih kecil di layar kecil */
+            padding: 0.25rem 0.5rem;
+        }
+    }
         body {
             background-color: #f5f7fa;
         }
@@ -112,29 +151,32 @@ $users = $stmt->fetchAll();
         <p>View and manage registered users for events</p>
     </div>
 
-    <table class="table table-striped mt-4">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Events Registered</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $user): ?>
+    <div class="table-responsive mt-4">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td><?= htmlspecialchars($user['name']) ?></td>
-                    <td><?= htmlspecialchars($user['email']) ?></td>
-                    <td><?= htmlspecialchars($user['events'] ?: 'No events registered') ?></td>
-                    <td>
-                        <a href="delete-user.php?id=<?= $user['user_id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
-                    </td>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Events Registered</th>
+                    <th>Action</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($user['name']) ?></td>
+                        <td><?= htmlspecialchars($user['email']) ?></td>
+                        <td><?= htmlspecialchars($user['events'] ?: 'No events registered') ?></td>
+                        <td>
+                            <a href="delete-user.php?id=<?= $user['user_id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

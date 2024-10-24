@@ -40,6 +40,46 @@ $registrant_list = $registrants->fetchAll();
     <title>Event Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+
+                @media (max-width: 768px) {
+        .container {
+            width: 100%; /* Pastikan container menyesuaikan dengan layar kecil */
+            padding: 1rem;
+        }
+        .table {
+            font-size: 0.9rem; /* Ukuran font lebih kecil */
+        }
+        .table th, .table td {
+            padding: 0.5rem; /* Kurangi padding di layar kecil */
+        }
+        h1, h3 {
+            font-size: 1.5rem; /* Ukuran font heading lebih kecil di layar kecil */
+        }
+        .btn {
+            font-size: 0.9rem; /* Ukuran tombol lebih kecil di layar kecil */
+            padding: 0.5rem 1rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .container {
+            width: 100%; /* Pastikan container menyesuaikan dengan layar kecil */
+            padding: 1rem;
+        }
+        .table {
+            font-size: 0.5rem; /* Ukuran font lebih kecil */
+        }
+        .table th, .table td {
+            padding: 0.25rem; /* Kurangi padding di layar kecil */
+        }
+        h1, h3 {
+            font-size: 1rem; /* Ukuran font heading lebih kecil di layar kecil */
+        }
+        .btn {
+            font-size: 0.5rem; /* Ukuran tombol lebih kecil di layar kecil */
+            padding: 0.25rem 0.5rem;
+        }
+    }
+    
         body {
             background-color: #3a3a91;
         }
