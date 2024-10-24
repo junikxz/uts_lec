@@ -108,7 +108,7 @@ if (isset($_GET['search'])) {
                 <?php foreach ($events as $event): ?>
                     <div class="col-md-4 mb-4">
                         <div class="event-card">
-                            <img src="../admin/uploads/<?= htmlspecialchars($event['image']) ?>" class="event-image" alt="Event Image">
+                            <img src="../../admin/uploads/<?= htmlspecialchars($event['image']) ?>" class="event-image" alt="Event Image">
                             <div class="event-body">
                                 <h5 class="event-title"><?= htmlspecialchars($event['name']) ?></h5>
                                 <p class="event-description"><?= htmlspecialchars($event['description']) ?></p>
