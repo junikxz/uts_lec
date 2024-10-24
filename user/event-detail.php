@@ -22,6 +22,8 @@ if (!$event) {
     exit();
 }
 
+$registration_success = false;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_SESSION['user_id'];
 
@@ -34,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($eventCheck->rowCount() > 0) {
             $stmt_registration = $pdo->prepare("INSERT INTO registrations (user_id, event_id) VALUES (?, ?)");
             if ($stmt_registration->execute([$user_id, $event_id])) {
-                echo "<div class='alert alert-success fixed-alert'>You have successfully registered for the event!</div>";
+                $registration_success = true;
             } else {
                 echo "<div class='alert alert-danger fixed-alert'>Failed to register for this event.</div>";
             }
@@ -147,7 +149,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Registration Successful</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have successfully registered for the event!
+                </div>
+                <div class="modal-footer">
+                    <a href="homepage/homepage.php" class="btn btn-primary">Go to Homepage</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <?php if ($registration_success): ?>
+        <script>
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>

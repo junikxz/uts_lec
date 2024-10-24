@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = htmlspecialchars(trim($_POST['email']));
     $password = $_POST['pass'];
     $cpassword = $_POST['cpass'];
-    $birthdate = $_POST['birthdate'];
+    $birthdate = htmlspecialchars($_POST['birthdate']);
     $phone = htmlspecialchars(trim($_POST['phone']));
 
     if ($password !== $cpassword) {
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($stmt->execute([$username, $email, $hashedPassword, $birthdate, $phone])) {
                 echo "<script>
                     alert('Signup successful! Please login.');
-                    window.location.href = '../user/login.php';
+                    window.location.href = '../index.php';
                     </script>";
             } else { 
                 echo "<script>

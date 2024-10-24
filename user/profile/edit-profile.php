@@ -8,8 +8,8 @@ $user->execute([$user_id]);
 $user_info = $user->fetch(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
     $old_password = $_POST['old_password'] ?? null;
     $new_password = $_POST['new_password'] ?? null;
     $confirm_password = $_POST['confirm_password'] ?? null;

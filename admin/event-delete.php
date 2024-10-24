@@ -8,11 +8,29 @@ if (!isset($_SESSION['admin'])) {
 require '../config/db.php';
 
 $id = $_GET['id'];
+
+$registrant_check = $pdo->prepare("SELECT COUNT(*) FROM registrations WHERE event_id = ?");
+$registrant_check->execute([$id]);
+$registrant_count = $registrant_check->fetchColumn();
+
+if ($registrant_count > 0) {
+    echo "<script>
+        alert('Event cannot be deleted because there are registered participants.');
+        window.location.href = 'dashboard.php';
+    </script>";
+    exit();
+}
+
 $stmt = $pdo->prepare("DELETE FROM event WHERE id = ?");
 if ($stmt->execute([$id])) {
-    header("Location: dashboard.php");
+    echo "<script>
+        alert('Event has been successfully deleted.');
+        window.location.href = 'dashboard.php';
+    </script>";
     exit();
 } else {
-    echo "Error deleting event!";
+    echo "<script>
+        alert('Error deleting event!');
+        window.location.href = 'dashboard.php';
+    </script>";
 }
-?>

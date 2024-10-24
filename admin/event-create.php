@@ -8,12 +8,12 @@ if (!isset($_SESSION['admin'])) {
 require '../config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $date = $_POST['date'];
-    $time = $_POST['time'];
-    $location = $_POST['location'];
-    $max_participants = $_POST['max_participants'];
+    $name = htmlspecialchars($_POST['name']);
+    $description = htmlspecialchars($_POST['description']);
+    $date = htmlspecialchars($_POST['date']);
+    $time = htmlspecialchars($_POST['time']);
+    $location = htmlspecialchars($_POST['location']);
+    $max_participants = htmlspecialchars($_POST['max_participants']);
     $status = $_POST['status'];
 
     $target_dir = "uploads/"; 
